@@ -11,24 +11,43 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130603163719) do
+ActiveRecord::Schema.define(:version => 20130816175552) do
 
-  create_table "stops", :force => true do |t|
-    t.string  "stop_id",                            :null => false
-    t.string  "stop_code"
-    t.string  "stop_name",                          :null => false
-    t.string  "stop_desc"
-    t.string  "stop_lat",                           :null => false
-    t.string  "stop_lon",                           :null => false
-    t.string  "zone_id",             :limit => 100
-    t.string  "stop_url"
-    t.string  "stop_timezone"
-    t.integer "wheelchair_boarding"
-    t.string  "stop_street"
-    t.string  "stop_city"
-    t.string  "stop_region"
-    t.string  "stop_postcode",       :limit => 50
-    t.string  "stop_country",        :limit => 100
+  create_table "source_stops", :id => false, :force => true do |t|
+    t.integer  "source_id",                                                           :null => false
+    t.string   "external_stop_id",                                                    :null => false
+    t.datetime "created_at",                                                          :null => false
+    t.datetime "updated_at",                                                          :null => false
+    t.decimal  "external_lat",                          :precision => 9, :scale => 6
+    t.decimal  "external_lon",                          :precision => 9, :scale => 6
+    t.string   "external_stop_name"
+    t.string   "external_stop_desc"
+    t.string   "external_zone_id",       :limit => 100
+    t.string   "external_stop_url"
+    t.string   "external_stop_street"
+    t.string   "external_stop_city"
+    t.string   "external_stop_region"
+    t.string   "external_stop_postcode", :limit => 50
+    t.string   "external_stop_country",  :limit => 100
+    t.integer  "stop_id"
   end
+
+  create_table "sources", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "realtime_url"
+  end
+
+  create_table "spatial_ref_sys", :id => false, :force => true do |t|
+    t.integer "srid",                      :null => false
+    t.string  "auth_name", :limit => 256
+    t.integer "auth_srid"
+    t.string  "srtext",    :limit => 2048
+    t.string  "proj4text", :limit => 2048
+  end
+
+# Could not dump table "stops" because of following StandardError
+#   Unknown type 'geometry' for column 'geo_point'
 
 end
